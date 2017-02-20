@@ -1,6 +1,7 @@
 package com.subbu.crypto.impl;
 
 import com.subbu.crypto.CryptoService;
+import com.subbu.crypto.utils.CryptoUtils;
 import org.apache.commons.lang3.CharUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,7 @@ public class CeaserCipher implements CryptoService {
             synchronized (CeaserCipher.class) {
                 if(_instance == null) {
                     _instance = new CeaserCipher();
+                    logger.info("****** Yeah got an instance of CeaserCipher ******");
                 }
             }
         }
@@ -69,6 +71,7 @@ public class CeaserCipher implements CryptoService {
             synchronized (CeaserCipher.class) {
                 if(_instance == null) {
                     _instance = new CeaserCipher(shiftSize);
+                    logger.info("****** Yeah got an instance of CeaserCipher ******");
                 }
             }
         }
@@ -88,7 +91,7 @@ public class CeaserCipher implements CryptoService {
         char[] _cipherText = new char[_plainText.length];
         logger.debug("Shiftsize - {}", shiftSize);
         for(int i=0;i<_plainText.length;i++) {
-            _cipherText[i] = getEncryptShiftChar(_plainText[i]);
+            _cipherText[i] = CryptoUtils.rollCharacters(_plainText[i],shiftSize);
         }
         logger.info("Cipher text after encryption - {}", String.valueOf(_cipherText));
         return String.valueOf(_cipherText);
@@ -107,93 +110,9 @@ public class CeaserCipher implements CryptoService {
         char[] _plainText = new char[_cipherText.length];
         logger.debug("Shiftsize - {}", shiftSize);
         for(int i=0;i<_cipherText.length;i++) {
-            _plainText[i] = getDecryptShiftChar(_cipherText[i]);
+            _plainText[i] = CryptoUtils.unRollCharacters(_cipherText[i], shiftSize);
         }
         logger.info("Plain text after encryption - {}", String.valueOf(_plainText));
         return String.valueOf(_plainText);
-    }
-
-    /**
-     * This is a utility method to get the forward encryption of Ceaser Cipher
-     * @param _char
-     * @return
-     */
-    private char getEncryptShiftChar(char _char){
-        char shiftedChar = '\0';
-
-        // If its not an alphabet either upper or lower return as-is
-        if(!CharUtils.isAsciiAlpha(_char)) return _char;
-
-        int iShiftChar = 0;
-
-        logger.debug("==================================================================================");
-
-        if(CharUtils.isAsciiAlphaUpper(_char)) {
-            logger.debug("Uppercase");
-            logger.debug("Before rolling the character {} - {}", _char, (int)_char);
-            iShiftChar = _char + shiftSize;
-            if (iShiftChar > 90) {
-                int diff = iShiftChar - 90;
-                logger.debug("The oversize - {}", diff);
-                iShiftChar = 65 + diff -1;
-                logger.debug("After rolling the character {} - {}", iShiftChar, (char)iShiftChar);
-            }
-        } else if(CharUtils.isAsciiAlphaLower(_char)) {
-            logger.debug("Lowercase");
-            logger.debug("Before rolling the character {} - {}", _char, (int)_char);
-            iShiftChar = _char + shiftSize;
-            if (iShiftChar > 122) {
-                int diff = iShiftChar - 122;
-                logger.debug("The oversize - {}", diff);
-                iShiftChar = 97 + diff -1;
-                logger.debug("After rolling the character {} - {}", iShiftChar, (char)iShiftChar);
-            }
-        }
-
-        shiftedChar = (char) iShiftChar;
-        return shiftedChar;
-    }
-
-    /**
-     * This is a utility method to get the reverse decryption of Ceaser Cipher
-     * @param _char
-     * @return
-     */
-    private char getDecryptShiftChar(char _char){
-        char shiftedChar = '\0';
-
-        // If its not an alphabet either upper or lower return as-is
-        if(!CharUtils.isAsciiAlpha(_char)) return _char;
-
-        int iShiftChar = 0;
-
-        logger.debug("==================================================================================");
-
-        if(CharUtils.isAsciiAlphaUpper(_char)) {
-            logger.debug("Uppercase");
-            logger.debug("Before rolling the character {} - {}", _char, (int)_char);
-            iShiftChar = _char - shiftSize;
-            if (iShiftChar < 65) {
-                int diff = _char - 65;
-                diff = shiftSize - diff -1;
-                logger.debug("The undersize - {}", diff);
-                iShiftChar = 90 - diff;
-                logger.debug("After rolling the character {} - {}", iShiftChar, (char)iShiftChar);
-            }
-        } else if(CharUtils.isAsciiAlphaLower(_char)) {
-            logger.debug("Lowercase");
-            logger.debug("Before rolling the character {} - {}", _char, (int)_char);
-            iShiftChar = _char - shiftSize;
-            if (iShiftChar < 97) {
-                int diff = _char - 97;
-                diff = shiftSize - diff -1;
-                logger.debug("The undersize - {}", diff);
-                iShiftChar = 122 - diff;
-                logger.debug("After rolling the character {} - {}", iShiftChar, (char)iShiftChar);
-            }
-        }
-
-        shiftedChar = (char) iShiftChar;
-        return shiftedChar;
     }
 }
