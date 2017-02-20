@@ -2,7 +2,6 @@ package com.subbu.crypto.impl;
 
 import com.subbu.crypto.CryptoService;
 import com.subbu.crypto.utils.CryptoUtils;
-import org.apache.commons.lang3.CharUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
