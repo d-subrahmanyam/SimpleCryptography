@@ -3,5 +3,6 @@ A repository with samples of simple cryptography using Java
 
 The following Ciphers are currently available - 
 
-- CeaserCipher
-- VigenereCipher
+- Ceaser Cipher
+- Vigenere Cipher
+- OneTimePad Cipher
