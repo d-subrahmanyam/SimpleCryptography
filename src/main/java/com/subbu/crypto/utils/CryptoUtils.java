@@ -1,15 +1,19 @@
 package com.subbu.crypto.utils;
 
 import org.apache.commons.lang3.CharUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This is a utility class used in the various crypto algorithms.
  * Created by devsu04 on 20/02/17.
  */
 public class CryptoUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(CryptoUtils.class);
+
+    public static final String COMMA = ",";
 
     /**
      * This is a utility method to roll the characters
@@ -111,5 +115,16 @@ public class CryptoUtils {
         }
         logger.debug("the alpha position for - {} - {}", _alpha, pos);
         return pos;
+    }
+
+    /**
+     * This is a utility method to get a random value between 1-26
+     * @return
+     */
+    public static int generateRandom() {
+        int rVal = 0;
+        rVal = RandomUtils.nextInt(1,24);
+        logger.debug("Random number generated - {}", rVal);
+        return rVal;
     }
 }

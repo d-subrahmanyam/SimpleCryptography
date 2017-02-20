@@ -47,7 +47,7 @@ public class VigenereCipher implements CryptoService {
     }
 
     /**
-     * Thread safe way of creating a singleton instance of the default CeaserCipher object
+     * Thread safe way of creating a singleton instance of the default VigenereCipher object
      * @return
      */
     public static CryptoService getInstance() {
@@ -63,7 +63,7 @@ public class VigenereCipher implements CryptoService {
     }
 
     /**
-     * Thread safe way of creating a singleton instance of the CeaserCipher object with shiftSize
+     * Thread safe way of creating a singleton instance of the VigenereCipher object with shiftSize
      * @param key
      * @return
      */
