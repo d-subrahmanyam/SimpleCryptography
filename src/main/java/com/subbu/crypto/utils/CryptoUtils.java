@@ -25,7 +25,7 @@ public class CryptoUtils {
 
     /**
      * This is a utility method to roll the characters
-     * 
+     *
      * @param _char
      * @return
      */
