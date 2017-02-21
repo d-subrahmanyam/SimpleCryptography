@@ -15,8 +15,17 @@ public class CryptoUtils {
 
     public static final String COMMA = ",";
 
+    public static final int DEFAULT_SHIFY_SIZE = 25;
+
+    public static enum CASE {
+        UPPERCASE,
+        LOWERCASE,
+        NONE
+    }
+
     /**
      * This is a utility method to roll the characters
+     * 
      * @param _char
      * @return
      */
@@ -56,6 +65,7 @@ public class CryptoUtils {
 
     /**
      * This is a utility method to unRoll the characters
+     *
      * @param _char
      * @param shiftSize
      * @return
@@ -100,6 +110,7 @@ public class CryptoUtils {
 
     /**
      * This is a utility method to get the alphabet positon of a given character
+     *
      * @param _alpha
      * @return
      */
@@ -118,13 +129,32 @@ public class CryptoUtils {
     }
 
     /**
+     * This is a utility function that returns the alphabet given a position
+     *
+     * @param pos
+     */
+    public static char getAlphaAtPos(int pos, CASE _case) {
+        char _charAtPos = '\0';
+        if(_case == CASE.LOWERCASE) {
+            logger.debug("Lowercase");
+            _charAtPos = (char) (97 + pos -1);
+        } else if(_case == CASE.UPPERCASE) {
+            logger.debug("Uppercase");
+            _charAtPos = (char) (65 + pos -1);
+        }
+        return _charAtPos;
+    }
+
+    /**
      * This is a utility method to get a random value between 1-26
+     *
      * @return
      */
-    public static int generateRandom() {
+    public static int generateRandom(int start, int end) {
         int rVal = 0;
-        rVal = RandomUtils.nextInt(1,24);
+        rVal = RandomUtils.nextInt(start, end);
         logger.debug("Random number generated - {}", rVal);
         return rVal;
     }
+
 }

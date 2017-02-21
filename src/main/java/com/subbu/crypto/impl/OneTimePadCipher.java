@@ -8,6 +8,24 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Created by devsu04 on 20/02/17.
+ *
+ * This class uses the OneTimePad Cipher(https://learncryptography.com/classical-encryption/one-time-pad)
+ * to encrypt and decrypt a given plain text
+ *
+ * Towards the end of the 19th century, it was becoming fairly obvious that simple substitution ciphers that
+ * were vulnerable to frequency analysis were no longer secure. How could they transmit a message without it’s
+ * contents being vulnerable to inspection, while still being able to be decrypted once they reached their
+ * destination? The answer is randomness.
+ * Let’s consider a modified version of the Vigenère cipher as an example. Instead of performing alphabet shifts
+ * on each character in the plaintext via a key, we shift every character in the plaintext a random amount – with
+ * each of these random shift amounts becoming the resulting key. This results in a completely random key the exact
+ * same length as the original plaintext. This means that across the entire message, there can be no structure deduced
+ * from the frequency of characters, as the key itself was entirely randomly created. This type of encryption is called
+ * the one time pad, and the benefits don’t stop there.
+ * With each character now having it’s own individual and random shift amount, the keyspace grows exponentially for each
+ * character in the message. Let’s say we were to encrypt the name “Alice” with a one time pad. That’s 5 letters – so to
+ * brute force it you would have to try a whole lot of possibilities:
+ * (26 * 26 * 26 * 26 * 26) or 26 pow 5 = 11881376
  */
 public class OneTimePadCipher implements CryptoService{
 
@@ -66,7 +84,7 @@ public class OneTimePadCipher implements CryptoService{
         char[] _cipherText = new char[_plainText.length];
         StringBuffer _key = new StringBuffer();
         for(int i=0;i<_plainText.length;i++) {
-            int shiftSize = CryptoUtils.generateRandom();
+            int shiftSize = CryptoUtils.generateRandom(1, 26);
             logger.debug("Shiftsize - {}", shiftSize);
             _cipherText[i] = CryptoUtils.rollCharacters(_plainText[i],shiftSize);
             _key.append(String.valueOf(shiftSize)).append(CryptoUtils.COMMA);
