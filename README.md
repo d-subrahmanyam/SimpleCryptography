@@ -8,4 +8,4 @@ The following Ciphers are currently available -
 - OneTimePad Cipher - https://learncryptography.com/classical-encryption/one-time-pad
 - Atbash Cipher - http://practicalcryptography.com/ciphers/classical-era/atbash-cipher
 - ROT13 Cipher - http://practicalcryptography.com/ciphers/classical-era/rot13
-- Affine Cipher - http://practicalcryptography.com/ciphers/classical-era/affine - WIP
+- Affine Cipher - http://practicalcryptography.com/ciphers/classical-era/affine
