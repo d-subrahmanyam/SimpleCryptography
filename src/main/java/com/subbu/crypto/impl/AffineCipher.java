@@ -61,11 +61,11 @@ public class AffineCipher implements CryptoService{
         while(_keyA == _keyB) {
             _keyB = generateKey();
         }
-        this.keyA = _keyA;
+        this.keyA = _keyA; // 5;
         logger.debug("The keyA - {}", keyA);
-        inverseOfKeyA = calculateInverseOfInt(keyA);
+        inverseOfKeyA = calculateInverseOfInt(keyA); // 21;
         logger.debug("Inverse of keyA - {}", inverseOfKeyA);
-        this.keyB = _keyB;
+        this.keyB = _keyB; // 9;
         logger.debug("The keyB - {}", keyB);
     }
 
@@ -113,7 +113,6 @@ public class AffineCipher implements CryptoService{
         char[] _plainText = plainText.toCharArray();
         char[] _cipherText = new char[_plainText.length];
         for(int i=0;i<_plainText.length;i++) {
-            // FIXME - Implement the encryption algorithm
             if(CharUtils.isAsciiAlpha(_plainText[i])) {
                 _cipherText[i] = getEncryptedChar(_plainText[i]);
             } else {
@@ -136,9 +135,9 @@ public class AffineCipher implements CryptoService{
         char[] _cipherText = cipherText.toCharArray();
         char[] _plainText = new char[_cipherText.length];
         for(int i=0;i<_cipherText.length;i++) {
-            // FIXME - Implement the decryption algorithm
             if(CharUtils.isAsciiAlpha(_cipherText[i])) {
                 _plainText[i] = getDecryptedChar(_cipherText[i]);
+                logger.debug("Got the decrypted char - {}", _plainText[i]);
             } else {
                 _plainText[i] = _cipherText[i];
             }
@@ -149,12 +148,12 @@ public class AffineCipher implements CryptoService{
 
     /**
      * This is a utility function that calculates the encrypted char based on the AffineCipher Algorithm
-     * TODO - Implement the AffineCipher encryption algorithm
      *
      * @param _char
      * @return
      */
     private char getEncryptedChar(char _char) {
+        logger.debug("================ iteration - {}", _char);
         char encChar = '\0';
         CryptoUtils.CASE _case = CryptoUtils.CASE.LOWERCASE;
         if(CharUtils.isAsciiAlpha(_char)) {
@@ -163,19 +162,20 @@ public class AffineCipher implements CryptoService{
         }
         int pos = CryptoUtils.getAlphaPos(_char);
         int newCharPos = (keyA * pos + keyB) % 26;
-        logger.debug("Applying the algorithm - newCharPos = ({} * {} + {}) % 26 - {}", keyA, pos, keyB, (keyA * pos + keyB) % 26);
+        logger.debug("Applying the algorithm - newCharPos = ({} * {} + {}) % 26 - {}", keyA, pos, keyB, newCharPos);
         encChar = CryptoUtils.getAlphaAtPos(newCharPos, _case);
+        logger.debug("Encrypted char - {}", encChar);
         return encChar;
     }
 
     /**
      * This is a utility function that calculates the decrypted char based on the AffineCipher Algorithm
-     * TODO - Implement the AffineCipher decryption algorithm
      *
      * @param _char
      * @return
      */
     private char getDecryptedChar(char _char) {
+        logger.debug("================ iteration - {}", _char);
         char decChar = '\0';
         CryptoUtils.CASE _case = CryptoUtils.CASE.LOWERCASE;
         if(CharUtils.isAsciiAlpha(_char)) {
@@ -184,8 +184,9 @@ public class AffineCipher implements CryptoService{
         }
         int pos = CryptoUtils.getAlphaPos(_char);
         int actualCharPos = (inverseOfKeyA * (pos - keyB));
-        if(actualCharPos < 0) actualCharPos*=-1;
-        logger.debug("Applying the algorithm - actualCharPos = {} * ({} - {}) = {}", inverseOfKeyA, pos, keyB, (inverseOfKeyA * (pos - keyB)));
+        actualCharPos = actualCharPos%26;
+        if(actualCharPos < 0) actualCharPos = 26 + actualCharPos; // This was necessary as Java does not calculate the modulo of a -ve integer properly
+        logger.debug("Applying the algorithm - actualCharPos = {} * ({} - {}) = {} = () % 26 = {}", inverseOfKeyA, pos, keyB, inverseOfKeyA * (pos - keyB), actualCharPos);
         decChar = CryptoUtils.getAlphaAtPos(actualCharPos, _case);
         return decChar;
     }

@@ -137,10 +137,10 @@ public class CryptoUtils {
         char _charAtPos = '\0';
         if(_case == CASE.LOWERCASE) {
             logger.debug("Lowercase");
-            _charAtPos = (char) (97 + pos -1);
+            _charAtPos = (char) (97 + pos);
         } else if(_case == CASE.UPPERCASE) {
             logger.debug("Uppercase");
-            _charAtPos = (char) (65 + pos -1);
+            _charAtPos = (char) (65 + pos);
         }
         return _charAtPos;
     }
